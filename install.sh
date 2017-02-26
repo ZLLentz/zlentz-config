@@ -1,9 +1,11 @@
 #!/bin/bash
-THIS_DIR=`dirname $0`
+THIS_DIR=`readlink -f "$(dirname $0)"`
 source $THIS_DIR/vars.sh
 
 backup() {
-  mv $HOME/.$1 $HOME/.$1.$BAK
+  if [ -f $HOME/.$1 ]; then
+    mv $HOME/.$1 $HOME/.$1.$BAK
+  fi
 }
 
 make_link() {
