@@ -1,3 +1,3 @@
 #!/bin/bash
 export BAK="bak.config"
-export files="bashrc bash_profile gitconfig inputrc vimrc"
+export files="bashrc bash_profile gitconfig inputrc vimrc vim/skeleton.py"
