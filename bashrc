@@ -50,7 +50,7 @@ clear_env() {
 # Fully clear path and reload this file
 reset_env() {
   clear_env nopath
-  source ~/.bashrc
+  source $HOME/.bashrc
 }
 
 # Used to get environment name into my PS1
