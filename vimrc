@@ -91,8 +91,7 @@ au BufNewFile,BufRead *.py
     \     encoding=utf-8
 
 "" Start new python files with boilerplate
-"au BufNewFile *.py r /reg/neh/home/zlentz/projects/new_file_boilerplate.py
-"au BufNewFile *.py 1d
+au BufNewFile *.py 0r ~/.vim/skeleton.py
 
 " Bash, yaml, c, rc settings
 au BufNewFile,BufRead *.c,*.c,*.cc,*.hh,*.sh,*.yaml,*.*rc
