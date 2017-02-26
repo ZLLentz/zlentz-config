@@ -1,5 +1,5 @@
 set nocompatible              " required
-filetype off                  " required 
+filetype off                  " required
 
 "set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -77,7 +77,7 @@ nnoremap <C-H> <C-W><C-H>
 highlight Folded ctermbg=black
 highlight SignColumn ctermbg=black
 let python_highlight_all=1
-"syntax on
+syntax on
 
 " Python settings
 au BufNewFile,BufRead *.py

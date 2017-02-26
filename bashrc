@@ -4,24 +4,37 @@ case $- in
       *) return;;
 esac
 
-setterm -blength 0
-export orig_path=$PATH
-
-# Do the default stuff or w/e
-if [ -f ~/.bashrc_defaults ]; then
-  . ~/.bashrc_defaults
-fi
-
-# Include home bin directory
-if [ -d "$HOME/bin" ] ; then
-  PATH="$HOME/bin:$PATH"
-fi
-
-export my_path=$PATH
-
+# Let's be group-writable by default.
+# Keep near top of bashrc because I may change this on some systems.
 umask 002
 
-# Define environments
+################
+# Environments #
+################
+
+# Record original path
+export orig_path=$PATH
+
+# Modify the path to my liking
+pathmunge() {
+  if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
+    if [ "$2" = "after" ] ; then
+      PATH=$PATH:$1
+    else
+      PATH=$1:$PATH
+    fi
+  fi
+}
+
+for path in "$HOME/bin"
+do
+  pathmunge $path
+done
+
+# Record my path
+export my_path=$PATH
+
+# Undo changes to paths 
 clear_env() {
   if [ -z "$1" ]; then
     envname "-"
@@ -34,15 +47,18 @@ clear_env() {
   unset PYTHONPATH
 }
 
+# Fully clear path and reload this file
 reset_env() {
   clear_env nopath
   source ~/.bashrc
 }
 
+# Used to get environment name into my PS1
 envname() {
   export ENVNAME=$1
 }
 
+# Get my conda environment
 conda_env() {
   clear_env
   export PATH="$HOME/conda/bin:$PATH"
@@ -51,9 +67,65 @@ conda_env() {
       source activate "$1"
   fi
 }
+# Start with consistent envname with clear_env
 clear_env
 
-# Shortcuts
+# PS1 Wizardry
+# Standard PS1 has just cwd's name with no context
+# Accumulate context directories until we hit our length quota
+pwd_short() {
+  dir=`pwd | sed "s:^${HOME}:~:"`
+  cols=`tput cols`
+  maxcols=$(( $cols / 5 ))
+  if [ "${#dir}" -gt $maxcols ]; then
+    while [ "${#dir}" -gt $(( $maxcols - 4)) ]
+    do
+      prevdir="$dir"
+      dir="${dir#*/}"
+      if [ "$dir" == "$prevdir" ]; then
+        break
+      fi
+    done
+    dir=".../${dir}"
+  fi
+  echo $dir
+}
+export PS1='\u@${HOSTNAME,,}:[$ENVNAME][$(pwd_short)]\$ '
+
+# Set the window title to show full directory
+export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME,,}: ${PWD/#$HOME/~}\007"'
+
+# Append to history, set file size
+shopt -s histappend
+HISTSIZE=1000
+HISTFILESIZE=2000
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Shorthand so I don't have to type cd ../../../..
 go_up() {
   COUNTER=0
   while [ $COUNTER -lt $1 ]; do
@@ -74,24 +146,3 @@ alias ..9='go_up 9'
 
 # Yay vim
 export EDITOR=vim
-
-# Custom PS1
-pwd_short() {
-  dir=`pwd | sed "s:^${HOME}:~:"`
-  cols=`tput cols`
-  maxcols=$(( $cols / 5 ))
-  if [ "${#dir}" -gt $maxcols ]; then
-    while [ "${#dir}" -gt $(( $maxcols - 4)) ]
-    do
-      prevdir="$dir"
-      dir="${dir#*/}"
-      if [ "$dir" == "$prevdir" ]; then
-        break
-      fi
-    done
-    dir=".../${dir}"
-  fi
-  echo $dir
-}
-export PS1='\u@${HOSTNAME,,}:[$ENVNAME][$(pwd_short)]\$ '
-export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME,,}: ${PWD/#$HOME/~}\007"'
