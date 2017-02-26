@@ -31,6 +31,11 @@ do
   pathmunge $path
 done
 
+# If I have system-specifc configurations, pull them in now
+if [ -f $HOME/.bashrc_site ]; then
+  source $HOME/.bashrc_site
+fi
+
 # Record my path
 export my_path=$PATH
 
