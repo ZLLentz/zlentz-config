@@ -1,53 +1,62 @@
-set nocompatible              " required
-filetype off                  " required
+set nocompatible              " required for Vundle
+filetype off                  " required for Vundle
 
 "set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage Vundle, required
+" Vundle plugin manager, do not delete
 Plugin 'gmarik/Vundle.vim'
 
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdtree'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-fugitive'
+" All plugins here
+Plugin 'ervandew/supertab' " Autocomplete with tabs
+Plugin 'scrooloose/nerdtree' " Vim filetree browser
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
+Plugin 'vim-scripts/AutoComplPop' " Portable autocomplete
+Plugin 'tpope/vim-fugitive' " Git integration
+Plugin 'scrooloose/syntastic' " General syntax checker
+Plugin 'tmhedberg/SimpylFold' " Python code-folding
+Plugin 'vim-scripts/indentpython.vim' " Python autoindent
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+" All Plugins must be added before the following line
+call vundle#end()            " required for Vundle
+filetype plugin indent on    " required for Vundle
 
 """""""""""""""""""
 " Plugin settings "
 """""""""""""""""""
 
-" SimpylFold
-let g:SimpylFold_docstring_preview=1
-
-" Syntastic
-let g:syntastic_auto_loc_list = 0
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['flake8']
-highlight SyntasticErrorSign cterm=bold ctermfg=1 guifg=Red
-highlight SyntasticWarningSign cterm=bold ctermfg=3 guifg=Brown
+" supertab
+" Start at top of the list
+let g:SuperTabDefaultCompletionType = "<c-n>"
 
 " NERDTree
+" Compatibility symbols for bad unicode
 let g:NERDTreeDirArrowExpandable = ">"
 let g:NERDTreeDirArrowCollapsible= "/"
+" Start NERDTree on startup
 autocmd vimenter * NERDTree
+" Switch cursor from NERDTree to main buffer
 autocmd vimenter * wincmd l
+" Close NERDTree if no main buffer exists
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" jedi-vim
-autocmd FileType python setlocal completeopt-=preview
+" Syntastic
+" Disable syntastic text at bottom
+let g:syntastic_auto_loc_list = 0
+" Do not check on quit
+let g:syntastic_check_on_wq = 0
+" Only use flake8
+let g:syntastic_python_checkers = ['flake8']
+" Change error/warning sign colors to be less obnoxious
+highlight SyntasticErrorSign cterm=bold ctermfg=1 guifg=Red
+highlight SyntasticWarningSign cterm=bold ctermfg=3 guifg=Brown
+" Make error collumn background less obnoxious
+highlight SignColumn ctermbg=black
 
-" supertab
-let g:SuperTabDefaultCompletionType = "<c-n>"
+" SimpylFold
+" Show preview of folded docstrings
+let g:SimpylFold_docstring_preview=1
 
 
 """"""""""""""""""
@@ -74,13 +83,14 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " Colors
+" Make folding less obnoxious
 highlight Folded ctermbg=black
-highlight SignColumn ctermbg=black
+" Syntax highlighting
 let python_highlight_all=1
 syntax on
 
 " Python settings
-au BufNewFile,BufRead *.py
+au FileType python
     \ set tabstop=4
     \     softtabstop=4
     \     shiftwidth=4
@@ -93,8 +103,8 @@ au BufNewFile,BufRead *.py
 "" Start new python files with boilerplate
 au BufNewFile *.py 0r ~/.vim/skeleton.py
 
-" Bash, yaml, c, rc settings
-au BufNewFile,BufRead *.c,*.c,*.cc,*.hh,*.sh,*.yaml,*.*rc
+" General settings for shell/vim scripts, c++, etc.
+au FileType sh,vim,cpp,yaml
     \ set tabstop=2
     \     softtabstop=2
     \     shiftwidth=2
