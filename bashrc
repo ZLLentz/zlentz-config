@@ -32,6 +32,7 @@ do
 done
 
 # If I have system-specifc configurations, pull them in now
+# Do this before recording my path
 if [ -f $HOME/.bashrc_site ]; then
   source $HOME/.bashrc_site
 fi
@@ -66,7 +67,7 @@ envname() {
 # Get my conda environment
 conda_env() {
   clear_env
-  export PATH="$HOME/conda/bin:$PATH"
+  pathmunge "$HOME/conda/bin"
   envname conda
   if ! [ -z $1 ]; then
       source activate "$1"
