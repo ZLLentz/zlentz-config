@@ -34,10 +34,8 @@ let g:SuperTabDefaultCompletionType = "<c-n>"
 " Compatibility symbols for bad unicode
 let g:NERDTreeDirArrowExpandable = ">"
 let g:NERDTreeDirArrowCollapsible= "/"
-" Start NERDTree on startup
-autocmd vimenter * NERDTree
-" Switch cursor from NERDTree to main buffer
-autocmd vimenter * wincmd l
+" Shortcut to open NERDTree
+nnoremap <F2> :NERDTree<CR>
 " Close NERDTree if no main buffer exists
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
