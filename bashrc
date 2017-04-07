@@ -96,10 +96,10 @@ pwd_short() {
   fi
   echo $dir
 }
-export PS1='\u@${HOSTNAME,,}:[$ENVNAME][$(pwd_short)]\$ '
+export PS1='\u@$(hostname):[$ENVNAME][$(pwd_short)]\$ '
 
 # Set the window title to show full directory
-export PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME,,}: ${PWD/#$HOME/~}\007"'
+export PROMPT_COMMAND='echo -ne "\033]0;${USER}@$(hostname): ${PWD/#$HOME/~}\007"'
 
 # Append to history, set file size
 shopt -s histappend
@@ -125,7 +125,9 @@ fi
 # some more ls aliases
 alias ll='ls -alF'
 alias la='ls -A'
-alias l='ls -CF'
+alias sl='ls'
+alias l='ls'
+alias s='ls'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
