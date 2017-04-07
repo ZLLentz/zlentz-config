@@ -39,6 +39,9 @@ nnoremap <F2> :NERDTree<CR>
 " Close NERDTree if no main buffer exists
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+" powerline
+set laststatus=2
+
 " Syntastic
 " Disable syntastic text at bottom
 let g:syntastic_auto_loc_list = 0
