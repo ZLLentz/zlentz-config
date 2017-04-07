@@ -154,3 +154,6 @@ alias ..9='go_up 9'
 
 # Yay vim
 export EDITOR=vim
+
+# Place me in home, not desktop
+cd
