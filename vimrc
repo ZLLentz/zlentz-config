@@ -65,7 +65,8 @@ let g:SimpylFold_docstring_preview=1
 """"""""""""""""""
 
 " Disable beep if enabled
-set visualbell
+set noerrorbells
+set novisualbell
 
 " Line numbers
 set number
