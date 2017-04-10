@@ -31,12 +31,6 @@ do
   pathmunge $path
 done
 
-# If I have system-specifc configurations, pull them in now
-# Do this before recording my path
-if [ -f $HOME/.bashrc_site ]; then
-  source $HOME/.bashrc_site
-fi
-
 # Record my path
 export my_path=$PATH
 
@@ -157,3 +151,8 @@ export EDITOR=vim
 
 # Place me in home, not desktop
 cd
+
+# If I have system-specifc configurations, pull them in now
+if [ -f $HOME/.bashrc_site ]; then
+  source $HOME/.bashrc_site
+fi
