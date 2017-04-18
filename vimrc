@@ -12,7 +12,6 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'ervandew/supertab' " Autocomplete with tabs
 Plugin 'scrooloose/nerdtree' " Vim filetree browser
 Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-Plugin 'vim-scripts/AutoComplPop' " Portable autocomplete
 Plugin 'tpope/vim-fugitive' " Git integration
 Plugin 'scrooloose/syntastic' " General syntax checker
 Plugin 'tmhedberg/SimpylFold' " Python code-folding
