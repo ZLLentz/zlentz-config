@@ -40,6 +40,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 " powerline
 set laststatus=2
+let g:powerline_config_overrides = {'ext': {'vim': {'top_theme': 'ascii'}}}
 
 " Syntastic
 " Disable syntastic text at bottom
@@ -64,8 +65,7 @@ let g:SimpylFold_docstring_preview=1
 """"""""""""""""""
 
 " Disable beep if enabled
-set noerrorbells
-set novisualbell
+set noerrorbells visualbell t_vb=
 
 " Line numbers
 set number
