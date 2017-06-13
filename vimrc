@@ -68,6 +68,7 @@ let g:SimpylFold_docstring_preview=1
 set noerrorbells visualbell t_vb=
 
 " Line numbers
+set number
 set relativenumber
 
 " Enable folding
