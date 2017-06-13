@@ -68,7 +68,7 @@ set noerrorbells
 set novisualbell
 
 " Line numbers
-set number
+set relativenumber
 
 " Enable folding
 set foldmethod=indent
