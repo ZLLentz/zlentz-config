@@ -114,5 +114,6 @@ au FileType sh,vim,cpp,yaml
     \     autoindent
 
 " Show bad whitespace in an obvious but not obnoxious color
+highlight pythonSpaceError ctermbg=darkgreen guibg=darkgreen
 highlight BadWhitespace ctermbg=darkgreen guibg=darkgreen
 au BufNewFile,BufRead *.py,*.pyw,*.c,*.h,*.cc,*.hh,*.sh match BadWhitespace /\s\+$/
