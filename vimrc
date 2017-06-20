@@ -90,6 +90,10 @@ highlight Folded ctermbg=black
 " Syntax highlighting
 let python_highlight_all=1
 syntax on
+" Diff recoloring to overwrite syntax highlighting
+highlight DiffAdd ctermfg=black
+highlight DiffChange ctermfg=black
+highlight DiffText ctermfg=black
 
 " Python settings
 au FileType python
