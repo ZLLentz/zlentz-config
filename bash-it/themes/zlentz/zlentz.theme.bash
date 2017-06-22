@@ -19,7 +19,13 @@ function my_vcs() {
     text="$(git_prompt_info)"
     detached="$(echo $text | grep Detached)"
     if [ -z "$detached" ]; then
-      echo "$(git_prompt_minimal_info)"
+        echo "$(git_prompt_minimal_info)"
+    fi
+}
+
+function my_env_ps1() {
+    if [ ! -z $ENVNAME ]; then
+        echo "${lb}${green}${ENVNAME}${rb}"
     fi
 }
 
@@ -27,7 +33,7 @@ function prompt_command() {
     my_user="${cyan}\u@\h"
     my_pwd="${green}\w"
     my_end="${normal}\\$ "
-    PS1="${lb}$(clock_prompt)${rb}${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
+    PS1="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
 }
 
 safe_append_prompt_command prompt_command
