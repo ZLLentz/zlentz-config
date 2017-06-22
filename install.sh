@@ -1,5 +1,10 @@
 #!/bin/bash
 THIS_DIR=`readlink -f "$(dirname $0)"`
+INSTALL_DIR="${HOME}/.config/zlentz-config"
+if [ "$THIS_DIR" != "$INSTALL_DIR" ]; then
+  echo "You should have put me in ${INSTALL_DIR}"
+  exit
+fi
 source $THIS_DIR/vars.sh
 
 backup() {
