@@ -20,14 +20,12 @@ do
 done
 
 # Initialize bash-it
-BASH_IT_DIR="${HOME}/.config/bash-it"
 if [ ! -f "${BASH_IT_DIR}" ]; then
   git clone --depth=1 "https://github.com/Bash-it/bash-it.git" "${BASH_IT_DIR}"
   sh ${BASH_IT_DIR}/install.sh --silent --no-modify-config
 fi
 
 # Install vim plugins
-VIM_BUNDLE="${HOME}/.vim/bundle"
 mkdir -p "${VIM_BUNDLE}"
 if [ ! -f "${VIM_BUNDLE}/Vundle.vim" ]; then
   git clone "https://github.com/VundleVim/Vundle.vim" "${VIM_BUNDLE}"

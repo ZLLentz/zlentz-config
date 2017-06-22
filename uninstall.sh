@@ -19,3 +19,6 @@ do
   remove_symlink $f
   restore_backup $f
 done
+
+rm -rf $BASH_IT_DIR
+rm -rf $VIM_BUNDLE
