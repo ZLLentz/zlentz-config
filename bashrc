@@ -18,6 +18,11 @@ export TODO="t"
 
 source "${BASH_IT}"/bash_it.sh
 
+# Add my home bin directory to the path
+if [ -d "${HOME}/bin" ]; then
+  pathmunge "${HOME}/bin"
+fi
+
 # Please no more false mail messages
 unset MAILCHECK
 
