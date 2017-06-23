@@ -20,5 +20,7 @@ do
   restore_backup $f
 done
 
-rm -rf $BASH_IT_DIR
-rm -rf $VIM_BUNDLE
+if [ -z "$1" ] && [ "$1" == "full" ]; then
+  rm -rf $BASH_IT_DIR
+  rm -rf $VIM_BUNDLE
+fi
