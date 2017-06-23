@@ -34,11 +34,22 @@ function my_env_ps1() {
     fi
 }
 
+my_user="${cyan}\u@\h"
+my_pwd="${green}\w"
+my_end="${normal}"
+
 function prompt_command() {
-    my_user="${cyan}\u@\h"
-    my_pwd="${green}\w"
-    my_end="${normal}\\$ "
-    PS1="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
+    PS1_MAIN="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
+    PS1_RAW="${PS1_MAIN@P}"
+    PS1_RAW=$(echo $PS1_RAW | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")
+    PS1_RAW="${PS1_RAW//[$'\001'$'\002']}"
+    PS1_SIZE="${#PS1_RAW}"
+    MAX_PS1_SIZE="$(( $(tput cols) / 2 ))"
+    if [ "${PS1_SIZE}" -gt "${MAX_PS1_SIZE}" ]; then
+        PS1="${PS1_MAIN}\n\$ "
+    else
+        PS1="${PS1_MAIN}\$ "
+    fi
 }
 
 safe_append_prompt_command prompt_command
