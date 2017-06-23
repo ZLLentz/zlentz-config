@@ -25,7 +25,12 @@ function my_vcs() {
 
 function my_env_ps1() {
     if [ ! -z $ENVNAME ]; then
-        echo "${lb}${purple}${ENVNAME}${rb}"
+      if [ ! -z "${CONDA_DEFAULT_ENV}" ]; then
+          ext=" ${CONDA_DEFAULT_ENV}"
+      else
+          ext=""
+      fi
+      echo "${lb}${purple}${ENVNAME}${ext}${rb}"
     fi
 }
 
