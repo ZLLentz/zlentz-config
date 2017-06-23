@@ -25,7 +25,7 @@ function my_vcs() {
 
 function my_env_ps1() {
     if [ ! -z $ENVNAME ]; then
-        echo "${lb}${green}${ENVNAME}${rb}"
+        echo "${lb}${purple}${ENVNAME}${rb}"
     fi
 }
 
