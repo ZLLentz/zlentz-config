@@ -40,15 +40,17 @@ my_end="${normal}"
 
 function prompt_command() {
     PS1_MAIN="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
-    PS1_RAW="${PS1_MAIN@P}"
-    PS1_RAW=$(echo $PS1_RAW | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")
-    PS1_RAW="${PS1_RAW//[$'\001'$'\002']}"
-    PS1_SIZE="${#PS1_RAW}"
-    MAX_PS1_SIZE="$(( $(tput cols) / 2 ))"
-    if [ "${PS1_SIZE}" -gt "${MAX_PS1_SIZE}" ]; then
-        PS1="${PS1_MAIN}\n\$ "
-    else
-        PS1="${PS1_MAIN}\$ "
+    PS1="${PS1_MAIN}\$ "
+    ver_short=$(echo $BASH_VERSION | cut -c 1,3)
+    if [ $ver_short -ge 44 ]; then
+        PS1_RAW="${PS1_MAIN@P}"
+        PS1_RAW=$(echo $PS1_RAW | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")
+        PS1_RAW="${PS1_RAW//[$'\001'$'\002']}"
+        PS1_SIZE="${#PS1_RAW}"
+        MAX_PS1_SIZE="$(( $(tput cols) / 2 ))"
+        if [ "${PS1_SIZE}" -gt "${MAX_PS1_SIZE}" ]; then
+            PS1="${PS1_MAIN}\n\$ "
+        fi
     fi
 }
 
