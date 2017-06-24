@@ -27,10 +27,11 @@ reset_env() {
   set_env_reset
 }
 
+export MY_CONDA_BIN="${HOME}/conda/bin"
 conda_env() {
   reset_env
   export PRE_ENV_PATH="${PATH}"
-  pathmunge "${HOME}/conda/bin"
+  pathmunge "${MY_CONDA_BIN}"
   set_envname conda
   if [ ! -z "$1" ]; then
     source activate "$1"
