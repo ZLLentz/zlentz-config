@@ -1,0 +1,5 @@
+channels:
+  - defaults
+  - conda-forge
+channel_priority: false
+update_dependencies: false
