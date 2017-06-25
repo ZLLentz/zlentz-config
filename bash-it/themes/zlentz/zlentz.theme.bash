@@ -42,7 +42,7 @@ ver_short=$(echo $BASH_VERSION | cut -c 1,3)
 
 function expand_ps1() {
   if [ $ver_short -ge 44 ]; then
-    echo "${$1@P}"
+    echo "${1@P}"
   else
     echo $(PS1="$1" "$BASH" --norc -i </dev/null 2>&1 | sed -n '${s/^\(.*\)exit$/\1/p;}')
   fi
