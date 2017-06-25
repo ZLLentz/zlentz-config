@@ -38,11 +38,21 @@ my_user="${cyan}\u@\h"
 my_pwd="${green}\w"
 my_end="${normal}"
 
+function ps1_lines() {
+  export my_lines_opt="$1"
+}
+
+ps1_lines 0
+ver_short=$(echo $BASH_VERSION | cut -c 1,3)
+
 function prompt_command() {
     PS1_MAIN="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
     PS1="${PS1_MAIN}\$ "
-    ver_short=$(echo $BASH_VERSION | cut -c 1,3)
-    if [ $ver_short -ge 44 ]; then
+    if [ $my_lines_opt == 1 ]; then
+        return
+    elif [ $my_lines_opt -gt 1 ]; then
+        PS1="${PS1_MAIN}\n\$ "
+    elif [ $ver_short -ge 44 ]; then
         PS1_RAW="${PS1_MAIN@P}"
         PS1_RAW=$(echo $PS1_RAW | sed -E "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")
         PS1_RAW="${PS1_RAW//[$'\001'$'\002']}"
