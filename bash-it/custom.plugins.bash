@@ -19,10 +19,33 @@ set_env_reset() {
   _set_if_input "ENVRESET" "$1"
 }
 
+export ENVPATHRESTORE="PATH"
+register_env_path() {
+  export "ENVPATHRESTORE"="$ENVPATHRESTORE $1";
+}
+
+env_path_save() {
+  for envpath in $ENVPATHRESTORE
+  do
+    export "PRE_ENV_$envpath"="${!envpath}"
+  done
+}
+
+env_path_save
+
+env_path_restore() {
+  for envpath in $ENVPATHRESTORE
+  do
+    var="PRE_ENV_$envpath"
+    export "$envpath"="${!var}"
+  done
+}
+
 reset_env() {
   if [ ! -z "$ENVRESET" ]; then
     eval "$ENVRESET"
   fi
+	env_path_restore
   set_envname
   set_env_reset
 }
@@ -30,7 +53,7 @@ reset_env() {
 export MY_CONDA_BIN="${HOME}/conda/bin"
 conda_env() {
   reset_env
-  export PRE_ENV_PATH="${PATH}"
+  env_path_save
   pathmunge "${MY_CONDA_BIN}"
   set_envname conda
   if [ ! -z "$1" ]; then
@@ -41,5 +64,4 @@ conda_env() {
 
 _conda_env_reset() {
   source deactivate
-  export PATH="${PRE_ENV_PATH}"
 }
