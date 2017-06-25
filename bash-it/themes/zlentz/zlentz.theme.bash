@@ -13,6 +13,9 @@ SCM_THEME_DETACHED_PREFIX="Detached"
 THEME_CLOCK_COLOR=${THEME_CLOCK_COLOR:-"${green}"}
 THEME_CLOCK_FORMAT=${THEME_CLOCK_FORMAT:-"%-l:%M %P"}
 
+CONDAENV_THEME_PROMPT_PREFIX=""
+CONDAENV_THEME_PROMPT_SUFFIX=""
+
 export PROMPT_DIRTRIM=3
 
 function my_vcs() {
@@ -24,13 +27,21 @@ function my_vcs() {
 }
 
 function my_env_ps1() {
-  if [ ! -z $ENVNAME ]; then
-    if [ ! -z "${CONDA_DEFAULT_ENV}" ]; then
-      ext=" ${CONDA_DEFAULT_ENV}"
-    else
-      ext=""
+  my_env="${ENVNAME}"
+  my_conda="$(condaenv_prompt)"
+  envcore=""
+  for var in "${my_env}" "${my_conda}";
+  do
+    if [ ! -z "${var}" ]; then
+      if [ -z "${envcore}" ]; then
+        envcore="${var}"
+      else
+        envcore="${envcore} ${var}"
+      fi
     fi
-    echo "${lb}${purple}${ENVNAME}${ext}${rb}"
+  done
+  if [ ! -z "${envcore}" ]; then
+    echo "${lb}${purple}${envcore}${rb}"
   fi
 }
 
