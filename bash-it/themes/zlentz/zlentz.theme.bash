@@ -17,6 +17,7 @@ CONDAENV_THEME_PROMPT_PREFIX=""
 CONDAENV_THEME_PROMPT_SUFFIX=""
 
 export PROMPT_DIRTRIM=3
+export PS1_COUNT_OFFSET=0
 
 function my_vcs() {
   text="$(git_prompt_info)"
@@ -66,16 +67,16 @@ function decolor() {
 }
 
 function prompt_command() {
-    PS1_MAIN="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
-    PS1_EXPAND="$(expand_ps1 "$PS1_MAIN")"
-    PS1_RAW="$(decolor "$PS1_EXPAND")"
-    PS1_SIZE="${#PS1_RAW}"
-    MAX_PS1_SIZE="$(( $(tput cols) / 2 ))"
-    if [ "${PS1_SIZE}" -gt "${MAX_PS1_SIZE}" ]; then
-      PS1="${PS1_MAIN}\n\$ "
-    else
-      PS1="${PS1_MAIN}\$ "
-    fi
+  PS1_MAIN="${lb}$(clock_prompt)${rb}$(my_env_ps1)${lb}${my_user} ${my_pwd}${rb}$(my_vcs)${my_end}"
+  PS1_EXPAND="$(expand_ps1 "$PS1_MAIN")"
+  PS1_RAW="$(decolor "$PS1_EXPAND")"
+  PS1_SIZE="$(expr "${#PS1_RAW}" - "${PS1_COUNT_OFFSET}")"
+  MAX_PS1_SIZE="$(( $(tput cols) / 2 ))"
+  if [ "${PS1_SIZE}" -gt "${MAX_PS1_SIZE}" ]; then
+    PS1="${PS1_MAIN}\n\$ "
+  else
+    PS1="${PS1_MAIN}\$ "
+  fi
 }
 
 safe_append_prompt_command prompt_command
