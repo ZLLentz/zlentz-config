@@ -20,10 +20,13 @@ export PROMPT_DIRTRIM=3
 export PS1_COUNT_OFFSET=0
 
 function my_vcs() {
-  text="$(git_prompt_info)"
-  detached="$(echo $text | grep Detached)"
-  if [ -z "$detached" ]; then
-    echo "$(git_prompt_minimal_info)"
+  scm
+  if [ "${SCM}" == "${SCM_GIT}" ]; then
+    text="$(git_prompt_info)"
+    detached="$(echo $text | grep Detached)"
+    if [ -z "$detached" ]; then
+      echo "$(git_prompt_minimal_info)"
+    fi
   fi
 }
 
