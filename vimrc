@@ -106,9 +106,6 @@ au FileType python
     \     fileformat=unix
     \     encoding=utf-8
 
-"" Start new python files with boilerplate
-au BufNewFile *.py 0r ~/.vim/skeleton.py
-
 " General settings for shell/vim scripts, c++, etc.
 au FileType sh,vim,cpp,yaml
     \ set tabstop=2
