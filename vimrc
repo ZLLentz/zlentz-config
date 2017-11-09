@@ -69,7 +69,6 @@ set noerrorbells visualbell t_vb=
 
 " Line numbers
 set number
-set relativenumber
 
 " Enable folding
 set foldmethod=indent
