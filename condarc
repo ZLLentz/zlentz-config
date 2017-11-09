@@ -1,5 +1,6 @@
 channels:
   - defaults
   - conda-forge
+  - lightsource2-tag
 channel_priority: false
 update_dependencies: false
