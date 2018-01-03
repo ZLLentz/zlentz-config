@@ -1,6 +1,9 @@
 alias s='ls'
-
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias l='ls'
+alias sl='ls'
+alias d='cd'
+alias c='cd'
+alias dc='cd'
 
 alias ..1='cd ..'
 alias ..2='cd ../..'
