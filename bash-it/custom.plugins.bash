@@ -65,3 +65,43 @@ conda_env() {
 _conda_env_reset() {
   source deactivate
 }
+
+
+# Helpers to set up Python development overrides
+
+register_env_path PYTHONPATH
+export MY_PYDEV_DIR="${HOME}/pydev"
+export MY_PYDEV_ENV="dev"
+pydev_env() {
+  reset_env
+  env_path_save
+  pathmunge "${MY_CONDA_BIN}"
+  source activate dev
+  pathmunge "${MY_PYDEV_DIR}/bin"
+  export PYTHONPATH="${MY_PYDEV_DIR}"
+  set_env_reset "_pydev_env_reset"
+}
+
+_pydev_env_reset() {
+  source deactivate
+}
+
+pydev_register() {
+  usage="pydev_register <path> <module or bin>"
+  if [ -z "${1}" ]; then
+    echo "${usage}"
+    return
+  fi
+  full_path="$(readlink -f $1)"
+  if [ "${2}" == "module" ]; then
+    link="${MY_PYDEV_DIR}"
+  elif [ "${2}" == "bin" ]; then
+    link="${MY_PYDEV_DIR}/bin"
+  else
+    echo "Invalid input."
+    echo "${usage}"
+    return
+  fi
+  mkdir -p "${MY_PYDEV_DIR}/bin"
+  ln -s "${full_path}" "${link}"
+}
