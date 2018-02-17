@@ -1,7 +1,7 @@
 channels:
+  - pcds-tag
   - defaults
-  - conda-forge
   - lightsource2-tag
-  - skywalker-dev
+  - conda-forge
 channel_priority: true
 update_dependencies: false

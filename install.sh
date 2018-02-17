@@ -31,7 +31,7 @@ done
 # Initialize bash-it
 if [ ! -d "${BASH_IT_DIR}" ]; then
   git clone --depth=1 "https://github.com/Bash-it/bash-it.git" "${BASH_IT_DIR}"
-  sh ${BASH_IT_DIR}/install.sh --silent --no-modify-config
+  sh "${BASH_IT_DIR}/install.sh" --silent --no-modify-config
   bash-it plugin enable base
   bash-it alias enable general
 fi
