@@ -50,20 +50,22 @@ reset_env() {
   set_env_reset
 }
 
-export MY_CONDA_BIN="${HOME}/conda/bin"
+export MY_CONDA="${HOME}/conda"
 conda_env() {
   reset_env
   env_path_save
-  pathmunge "${MY_CONDA_BIN}"
+  source "${MY_CONDA}/etc/profile.d/conda.sh"
   set_envname conda
   if [ ! -z "$1" ]; then
-    source activate "$1"
+    conda activate "$1"
+  else
+    conda activate
   fi
   set_env_reset "_conda_env_reset"
 }
 
 _conda_env_reset() {
-  source deactivate
+  conda deactivate
 }
 
 
@@ -75,15 +77,15 @@ export MY_PYDEV_ENV="dev"
 pydev_env() {
   reset_env
   env_path_save
-  pathmunge "${MY_CONDA_BIN}"
-  source activate dev
+  source "${MY_CONDA}/etc/profile.d/conda.sh"
+  conda activate dev
   pathmunge "${MY_PYDEV_DIR}/bin"
   export PYTHONPATH="${MY_PYDEV_DIR}"
   set_env_reset "_pydev_env_reset"
 }
 
 _pydev_env_reset() {
-  source deactivate
+  conda deactivate
 }
 
 pydev_register() {
