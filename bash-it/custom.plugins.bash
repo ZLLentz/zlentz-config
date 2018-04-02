@@ -78,6 +78,8 @@ pydev_env() {
   reset_env
   env_path_save
   source "${MY_CONDA}/etc/profile.d/conda.sh"
+  conda deactivate
+  conda activate
   conda activate dev
   pathmunge "${MY_PYDEV_DIR}/bin"
   export PYTHONPATH="${MY_PYDEV_DIR}"
