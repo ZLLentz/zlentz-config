@@ -88,6 +88,7 @@ pydev_env() {
 
 _pydev_env_reset() {
   conda deactivate
+  conda deactivate
 }
 
 pydev_register() {
