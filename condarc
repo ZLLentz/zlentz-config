@@ -1,7 +1,6 @@
 channels:
   - pcds-tag
   - defaults
-  - lightsource2-tag
   - conda-forge
 channel_priority: true
 update_dependencies: false
