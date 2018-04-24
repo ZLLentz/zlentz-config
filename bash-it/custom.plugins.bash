@@ -109,3 +109,25 @@ pydev_register() {
   mkdir -p "${MY_PYDEV_DIR}/bin"
   ln -s "${full_path}" "${link}"
 }
+
+git_setup_fork() {
+  usage="git_setup_fork <repo>"
+  if [ -z "${1}" ]; then
+    echo "${usage}"
+    return
+  fi
+  REPO=`basename "${1}"`
+  UPSTREAM=`dirname "${1}"`
+  GITHUB_USERNAME="zllentz"
+  git clone "git@github.com:${GITHUB_USERNAME}/${REPO}.git"
+  pushd "${REPO}"
+  git remote add upstream "git@github.com:${UPSTREAM}/${REPO}.git"
+  popd
+}
+
+git_sync_upstream() {
+  git checkout master
+  git fetch upstream
+  git pull upstream master
+  git push origin master
+}
