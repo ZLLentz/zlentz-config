@@ -14,6 +14,7 @@ export BASH_IT="${HOME}/.config/bash-it"
 export BASH_IT_THEME='zlentz'
 export BASH_IT_CUSTOM="${HOME}/.config/zlentz-config/bash-it"
 export SCM_CHECK=true
+export THEME_CHECK_SUDO=false
 
 source "${BASH_IT}"/bash_it.sh
 

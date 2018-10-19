@@ -1,7 +1,8 @@
 [user]
 	name = Zachary Lentz
 	useConfigOnly = true
+	email = zlentz@slac.stanford.edu
 [color]
 	ui = auto
 [alias]
-       loll = log --graph --decorate --pretty=oneline --abbrev-commit
+        loll = log --graph --decorate --pretty=oneline --abbrev-commit
