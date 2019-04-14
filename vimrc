@@ -17,10 +17,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Remap tab to autocomplete
-inoremap <tab> <C-N>
-inoremap <S-tab> <C-P>
-
 " Colors
 " Make folding less obnoxious
 highlight Folded ctermbg=black
