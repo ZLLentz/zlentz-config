@@ -18,7 +18,8 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " Remap tab to autocomplete
-nnoremap <tab> <C-N>
+inoremap <tab> <C-N>
+inoremap <S-tab> <C-P>
 
 " Colors
 " Make folding less obnoxious
