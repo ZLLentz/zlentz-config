@@ -13,6 +13,7 @@ pydev_env() {
   conda activate dev
   pathmunge "${MY_PYDEV_DIR}/bin"
   export PYTHONPATH="${MY_PYDEV_DIR}"
+  set_envname pydev
   set_env_reset "_pydev_env_reset"
 }
 

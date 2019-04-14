@@ -15,51 +15,60 @@ prompt_zlentz_none(){
   PS1='$ '
 }
 
-set_prompt_zlentz_none(){
+set_prompt_none(){
   export PROMPT_COMMAND=prompt_zlentz_none
 }
 
 # Now the easy normal one
 prompt_zlentz_basic(){
-  PS1="\u@\h:\w $ "
+  PS1="\u@\h:\w$ "
 }
 
-set_prompt_zlentz_basic(){
+set_prompt_basic(){
   export PROMPT_COMMAND=prompt_zlentz_basic
 }
 
 # And now let's go crazy
 prompt_zlentz_full(){
-  PS1="$(prompt_zlentz_get_env)${lb}\u@\h \w${rb}$(prompt_zlentz_get_vcs)$ "
+  PS1="$(prompt_zlentz_get_env)${cyan}\u@\h${normal}:${green}\w${normal}$(prompt_zlentz_get_vcs)$ "
 }
 
-set_prompt_zlentz_full(){
+set_prompt_full(){
   export PROMPT_COMMAND=prompt_zlentz_full
 }
 
-lb="["
-rb="]"
+# Define all the colors in case I change my mind
+black="\[\e[0;30m\]"
+red="\[\e[0;31m\]"
+green="\[\e[0;32m\]"
+yellow="\[\e[0;33m\]"
+blue="\[\e[0;34m\]"
+purple="\[\e[0;35m\]"
+cyan="\[\e[0;36m\]"
+white="\[\e[0;37m\]"
+orange="\[\e[0;91m\]"
+normal="\[\e[0m\]"
 
 prompt_zlentz_get_env(){
-  if [ -n "${ENVNAME}" ], then
-    if [ -n "${CONDA_DEFAULT_ENVNAME}" ], then
-      echo "${lb}${ENVNAME} ${CONDA_DEFAULT_ENVNAME}${rb}"
-    else
-      echo "${lb}${ENVNAME}${rb}"
-    fi
+  if [ -n "${ENVNAME}" ]; then
+    echo "(${purple}${ENVNAME}${normal})"
+  elif [ -n "${CONDA_DEFAULT_ENV}" ]; then
+    echo "(${purple}${CONDA_DEFAULT_ENV}${normal})"
   fi
 }
 
 prompt_zlentz_get_vcs(){
-  if [ -x git ], then
-    if [ "$(git rev-parse --git-dir > /dev/null 2>&1)" ]; then
-      status_check="$(git status | grep 'working tree clean')"
-      if [ -z status_check ], then
-        status="+"
+  if [ -x "$(command -v git)" ]; then
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+      if [ -n "$(git status --porcelain=v1)" ]; then
+        status_symbol=${red}"+"
       else
-        status="-"
+        status_symbol=${green}"-"
       fi
-      echo "${lb}$(git branch) ${status}${rb}"
+      echo "(${purple}$(git symbolic-ref -q --short HEAD) ${status_symbol}${normal})"
     fi
   fi
 }
+
+# Finally, at the bottom here, activate the default
+set_prompt_full

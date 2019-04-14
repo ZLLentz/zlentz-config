@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 # conda_env implementation of path machinery
-export MY_CONDA="${HOME}/conda"
+export MY_CONDA="${HOME}/miniconda"
 conda_env() {
   reset_env
   env_path_save
   source "${MY_CONDA}/etc/profile.d/conda.sh"
-  set_envname conda
   if [ ! -z "$1" ]; then
     conda activate "$1"
   else

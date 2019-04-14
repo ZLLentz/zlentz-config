@@ -10,7 +10,7 @@ esac
 umask 002
 
 # Define pathmunge if no system pathmunge
-if ! [ -x "$(command -v pathmunge)" ] then
+if ! [ -x "$(command -v pathmunge)" ]; then
   pathmunge () {
     if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
       if [ "$2" = "after" ] ; then
@@ -20,7 +20,6 @@ if ! [ -x "$(command -v pathmunge)" ] then
       fi
     fi
   }
-  export pathmunge
 fi
 
 # Add my home bin directory to the path
@@ -42,7 +41,9 @@ shopt -s checkwinsize
 export EDITOR=vim
 
 # Place me in home, not desktop
-cd $HOME
+if [ "$(pwd)" == "$HOME/Desktop" ]; then
+  cd $HOME
+fi
 
 # Pull in all of the larger changes from my config
 if [ -f $HOME/.config/zlentz-config/extensions ]; then
