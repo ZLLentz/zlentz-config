@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+THIS_DIR=`readlink -f "$(dirname $0)"`
+extensions = "aliases envs env-conda env-pydev utils prompt"
+for $ext in extensions
+do
+  full_ext="${THIS_DIR}/ext/${ext}"
+  if [ -f "${full_ext}" ] then
+    source "${full_ext}"
+  fi
+done

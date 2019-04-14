@@ -1,5 +1,5 @@
 #!/bin/bash
-export THIS_DIR=`dirname $0`
+THIS_DIR=`readlink -f "$(dirname $0)"`
 source $THIS_DIR/vars.sh
 
 restore_backup() {
@@ -19,8 +19,3 @@ do
   remove_symlink $f
   restore_backup $f
 done
-
-if [ -z "$1" ] && [ "$1" == "full" ]; then
-  rm -rf $BASH_IT_DIR
-  rm -rf $VIM_BUNDLE
-fi

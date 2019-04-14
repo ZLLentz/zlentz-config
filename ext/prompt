@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# These are my mods to the prompt. Three modes:
+# prompt_zlentz_full: (this is the default)
+# [active environment][username@host .../partial/path][vcs branch -]$
+# prompt_zlentz_basic:
+# username@hostname:~$
+# prompt_zlentz_none:
+# $ 
+
+# Common settings
+export PROMPT_DIRTRIM=2
+
+# Start with the easiest
+prompt_zlentz_none(){
+  PS1='$ '
+}
+
+set_prompt_zlentz_none(){
+  export PROMPT_COMMAND=prompt_zlentz_none
+}
+
+# Now the easy normal one
+prompt_zlentz_basic(){
+  PS1="\u@\h:\w $ "
+}
+
+set_prompt_zlentz_basic(){
+  export PROMPT_COMMAND=prompt_zlentz_basic
+}
+
+# And now let's go crazy
+prompt_zlentz_full(){
+  PS1="$(prompt_zlentz_get_env)${lb}\u@\h \w${rb}$(prompt_zlentz_get_vcs)$ "
+}
+
+set_prompt_zlentz_full(){
+  export PROMPT_COMMAND=prompt_zlentz_full
+}
+
+lb="["
+rb="]"
+
+prompt_zlentz_get_env(){
+  if [ -n "${ENVNAME}" ], then
+    if [ -n "${CONDA_DEFAULT_ENVNAME}" ], then
+      echo "${lb}${ENVNAME} ${CONDA_DEFAULT_ENVNAME}${rb}"
+    else
+      echo "${lb}${ENVNAME}${rb}"
+    fi
+  fi
+}
+
+prompt_zlentz_get_vcs(){
+  if [ -x git ], then
+    if [ "$(git rev-parse --git-dir > /dev/null 2>&1)" ]; then
+      status_check="$(git status | grep 'working tree clean')"
+      if [ -z status_check ], then
+        status="+"
+      else
+        status="-"
+      fi
+      echo "${lb}$(git branch) ${status}${rb}"
+    fi
+  fi
+}

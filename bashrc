@@ -9,14 +9,19 @@ esac
 # Keep near top of bashrc because I may change this on some systems.
 umask 002
 
-# Initialize bash-it. This also collects aliases from my config repo.
-export BASH_IT="${HOME}/.config/bash-it"
-export BASH_IT_THEME='zlentz'
-export BASH_IT_CUSTOM="${HOME}/.config/zlentz-config/bash-it"
-export SCM_CHECK=true
-export THEME_CHECK_SUDO=false
-
-source "${BASH_IT}"/bash_it.sh
+# Define pathmunge if no system pathmunge
+if ! [ -x "$(command -v pathmunge)" ] then
+  pathmunge () {
+    if ! echo $PATH | /bin/egrep -q "(^|:)$1($|:)" ; then
+      if [ "$2" = "after" ] ; then
+        PATH=$PATH:$1
+          else
+        PATH=$1:$PATH
+      fi
+    fi
+  }
+  export pathmunge
+fi
 
 # Add my home bin directory to the path
 if [ -d "${HOME}/bin" ]; then
@@ -37,8 +42,11 @@ shopt -s checkwinsize
 export EDITOR=vim
 
 # Place me in home, not desktop
-if [ "$(pwd)" == "$HOME/Desktop" ]; then
-  cd
+cd $HOME
+
+# Pull in all of the larger changes from my config
+if [ -f $HOME/.config/zlentz-config/extensions ]; then
+  source $HOME/.config/zlentz-config/extensions
 fi
 
 # If I have system-specifc configurations, pull them in now

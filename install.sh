@@ -18,26 +18,9 @@ make_link() {
   ln -s $INSTALL_DIR/$1 $HOME/.$1
 }
 
-# Make needed directories
-mkdir -p "${VIM_BUNDLE}"
-
 # Place soft-links
 for f in $files
 do
   backup $f
   make_link $f
 done
-
-# Initialize bash-it
-if [ ! -d "${BASH_IT_DIR}" ]; then
-  git clone --depth=1 "https://github.com/Bash-it/bash-it.git" "${BASH_IT_DIR}"
-  sh "${BASH_IT_DIR}/install.sh" --silent --no-modify-config
-  bash-it plugin enable base
-  bash-it alias enable general
-fi
-
-# Install vim plugins
-if [ ! -d "${VIM_BUNDLE}/Vundle.vim" ]; then
-  git clone --depth=1 "https://github.com/VundleVim/Vundle.vim" "${VIM_BUNDLE}/Vundle.vim"
-fi
-vim -c PluginInstall -c quitall
