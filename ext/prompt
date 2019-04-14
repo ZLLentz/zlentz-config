@@ -1,55 +1,78 @@
 #!/usr/bin/env bash
-# These are my mods to the prompt. Three modes:
-# prompt_zlentz_full: (this is the default)
-# [active environment][username@host .../partial/path][vcs branch -]$
-# prompt_zlentz_basic:
-# username@hostname:~$
-# prompt_zlentz_none:
-# $ 
+# These are my mods to the prompt
+
+# Put options at the top so I see them first when I check this file
+prompt_full(){
+  # My full prompt with colors, env, path, vcs
+  export PROMPT_COMMAND=_prompt_full
+}
+
+prompt_simple(){
+  # Colors, path
+  export PROMPT_COMMAND=_prompt_simple
+}
+
+prompt_short(){
+  # Colors
+  export PROMPT_COMMAND=_prompt_short
+}
+
+prompt_none(){
+  # Just the $ sign
+  export PROMPT_COMMAND=_prompt_none
+}
+
+# Put the implementations of each next so I can compare
+_prompt_full(){
+  PS1="$(_prompt_get_env)${cyan}\u@\h${normal}:${green}\w${normal}$(_prompt_get_vcs)$ "
+}
+
+_prompt_simple(){
+  PS1="${cyan}\u@\h${normal}:${green}\w${normal}$ "
+}
+
+_prompt_short(){
+  PS1="${cyan}\u@\h${normal}:$ "
+}
+
+_prompt_none(){
+  PS1="$ "
+}
 
 # Common settings
 export PROMPT_DIRTRIM=2
 
-# Start with the easiest
-prompt_zlentz_none(){
-  PS1='$ '
-}
-
-set_prompt_none(){
-  export PROMPT_COMMAND=prompt_zlentz_none
-}
-
-# Now the easy normal one
-prompt_zlentz_basic(){
-  PS1="\u@\h:\w$ "
-}
-
-set_prompt_basic(){
-  export PROMPT_COMMAND=prompt_zlentz_basic
-}
-
-# And now let's go crazy
-prompt_zlentz_full(){
-  PS1="$(prompt_zlentz_get_env)${cyan}\u@\h${normal}:${green}\w${normal}$(prompt_zlentz_get_vcs)$ "
-}
-
-set_prompt_full(){
-  export PROMPT_COMMAND=prompt_zlentz_full
-}
-
 # Define all the colors in case I change my mind
-black="\[\e[0;30m\]"
-red="\[\e[0;31m\]"
-green="\[\e[0;32m\]"
-yellow="\[\e[0;33m\]"
-blue="\[\e[0;34m\]"
-purple="\[\e[0;35m\]"
-cyan="\[\e[0;36m\]"
-white="\[\e[0;37m\]"
-orange="\[\e[0;91m\]"
-normal="\[\e[0m\]"
+prompt_color_on(){
+  export black="\[\e[0;30m\]"
+  export red="\[\e[0;31m\]"
+  export green="\[\e[0;32m\]"
+  export yellow="\[\e[0;33m\]"
+  export blue="\[\e[0;34m\]"
+  export purple="\[\e[0;35m\]"
+  export cyan="\[\e[0;36m\]"
+  export white="\[\e[0;37m\]"
+  export orange="\[\e[0;91m\]"
+  export normal="\[\e[0m\]"
+}
+prompt_color_on
 
-prompt_zlentz_get_env(){
+# In case I need to disable these
+prompt_color_off(){
+  unset black
+  unset red
+  unset green
+  unset yellow
+  unset blue
+  unset purple
+  unset cyan
+  unset white
+  unset orange
+  unset normal
+}
+
+# Helper functions
+_prompt_get_env(){
   if [ -n "${ENVNAME}" ]; then
     echo "(${purple}${ENVNAME}${normal})"
   elif [ -n "${CONDA_DEFAULT_ENV}" ]; then
@@ -57,7 +80,7 @@ prompt_zlentz_get_env(){
   fi
 }
 
-prompt_zlentz_get_vcs(){
+_prompt_get_vcs(){
   if [ -x "$(command -v git)" ]; then
     if git rev-parse --git-dir > /dev/null 2>&1; then
       if [ -n "$(git status --porcelain=v1)" ]; then
@@ -71,4 +94,4 @@ prompt_zlentz_get_vcs(){
 }
 
 # Finally, at the bottom here, activate the default
-set_prompt_full
+prompt_full
