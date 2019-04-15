@@ -83,7 +83,7 @@ _prompt_get_env(){
 _prompt_get_vcs(){
   if [ -x "$(command -v git)" ]; then
     if git rev-parse --git-dir > /dev/null 2>&1; then
-      if [ -n "$(git status --porcelain=v1)" ]; then
+      if [ -n "$(git status --porcelain)" ]; then
         status_symbol=${red}"+"
       else
         status_symbol=${green}"-"
