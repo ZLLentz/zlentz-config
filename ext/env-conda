@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # conda_env implementation of path machinery
-export MY_CONDA="${HOME}/miniconda"
+export MY_CONDA="${HOME}/miniconda3"
 conda_env() {
   reset_env
   env_path_save
