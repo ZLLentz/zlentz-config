@@ -13,7 +13,7 @@ git_setup_fork() {
   fi
   REPO=`basename "${1}"`
   UPSTREAM=`dirname "${1}"`
-  GITHUB_USERNAME="zllentz"
+  GITHUB_USERNAME="ZLLentz"
   git clone "git@github.com:${GITHUB_USERNAME}/${REPO}.git"
   pushd "${REPO}"
   git remote add upstream "git@github.com:${UPSTREAM}/${REPO}.git"
