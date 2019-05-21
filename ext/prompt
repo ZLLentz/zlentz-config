@@ -148,7 +148,6 @@ _prompt_ender(){
 
 # Some preset combinations of options
 prompt_full(){
-  prompt_color_on
   prompt_git_on
   prompt_env_on
   prompt_user_on
@@ -158,7 +157,6 @@ prompt_full(){
 }
 
 prompt_simple(){
-  prompt_color_on
   prompt_git_off
   prompt_env_off
   prompt_user_on
@@ -168,7 +166,6 @@ prompt_simple(){
 }
 
 prompt_short(){
-  prompt_color_on
   prompt_git_off
   prompt_env_off
   prompt_user_on
@@ -178,7 +175,6 @@ prompt_short(){
 }
 
 prompt_none(){
-  prompt_color_off
   prompt_git_off
   prompt_env_off
   prompt_user_off
@@ -189,3 +185,4 @@ prompt_none(){
 
 # Turn on the prompt!
 prompt_full
+prompt_color_on
