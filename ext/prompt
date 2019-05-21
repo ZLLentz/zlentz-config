@@ -1,48 +1,18 @@
 #!/usr/bin/env bash
 # These are my mods to the prompt
 
-# Put options at the top so I see them first when I check this file
-prompt_full(){
-  # My full prompt with colors, env, path, vcs
-  export PROMPT_COMMAND=_prompt_full
+# Set the prompt command
+_zlentz_prompt(){
+  PS1="$(_prompt_env)$(_prompt_norm)$(_prompt_git)$(_prompt_ender)"
 }
+export PROMPT_COMMAND=_zlentz_prompt
 
-prompt_simple(){
-  # Colors, path
-  export PROMPT_COMMAND=_prompt_simple
-}
-
-prompt_short(){
-  # Colors
-  export PROMPT_COMMAND=_prompt_short
-}
-
-prompt_none(){
-  # Just the $ sign
-  export PROMPT_COMMAND=_prompt_none
-}
-
-# Put the implementations of each next so I can compare
-_prompt_full(){
-  PS1="$(_prompt_get_env)${cyan}\u@\h${normal}:${green}\w${normal}$(_prompt_get_vcs)$ "
-}
-
-_prompt_simple(){
-  PS1="${cyan}\u@\h${normal}:${green}\w${normal}$ "
-}
-
-_prompt_short(){
-  PS1="${cyan}\u@\h${normal}:$ "
-}
-
-_prompt_none(){
-  PS1="$ "
-}
-
-# Common settings
+# Built-in settings
 export PROMPT_DIRTRIM=2
 
-# Define all the colors in case I change my mind
+# Utilities #
+# colors: define colors for use in all the prompts
+# I stole these from bash-it
 prompt_color_on(){
   export black="\[\e[0;30m\]"
   export red="\[\e[0;31m\]"
@@ -55,9 +25,7 @@ prompt_color_on(){
   export orange="\[\e[0;91m\]"
   export normal="\[\e[0m\]"
 }
-prompt_color_on
 
-# In case I need to disable these
 prompt_color_off(){
   unset black
   unset red
@@ -71,27 +39,153 @@ prompt_color_off(){
   unset normal
 }
 
-# Helper functions
-_prompt_get_env(){
-  if [ -n "${ENVNAME}" ]; then
-    echo "(${purple}${ENVNAME}${normal})"
-  elif [ -n "${CONDA_DEFAULT_ENV}" ]; then
-    echo "(${purple}${CONDA_DEFAULT_ENV}${normal})"
-  fi
+# _prompt_opt: quick utility for seeing if the relevant env var is set
+_prompt_opt(){
+  [[ -v "PROMPT_${1^^}" ]]
 }
 
-_prompt_get_vcs(){
-  if [ -x "$(command -v git)" ]; then
-    if git rev-parse --git-dir > /dev/null 2>&1; then
-      if [ -n "$(git status --porcelain)" ]; then
-        status_symbol=${red}"+"
-      else
-        status_symbol=${green}"-"
+# Special stuff #
+# git: show git repo info if we're in a repo
+prompt_git_on(){
+  export PROMPT_GIT=1
+}
+
+prompt_git_off(){
+  unset PROMPT_GIT
+}
+
+_prompt_git(){
+  if _prompt_opt git; then
+    if [ -x "$(command -v git)" ]; then
+      if git rev-parse --git-dir > /dev/null 2>&1; then
+        if [ -n "$(git status --porcelain)" ]; then
+          status_symbol=${red}"+"
+        else
+          status_symbol=${green}"-"
+        fi
+        echo "(${purple}$(git symbolic-ref -q --short HEAD) ${status_symbol}${normal})"
       fi
-      echo "(${purple}$(git symbolic-ref -q --short HEAD) ${status_symbol}${normal})"
     fi
   fi
 }
 
-# Finally, at the bottom here, activate the default
+# env: allow us to change our path quickly
+prompt_env_on(){
+  export PROMPT_ENV=1
+}
+
+prompt_env_off(){
+  unset PROMPT_ENV
+}
+
+_prompt_env(){
+  if _prompt_opt env; then
+    if [ -n "${ENVNAME}" ]; then
+      echo "(${purple}${ENVNAME}${normal})"
+    elif [ -n "${CONDA_DEFAULT_ENV}" ]; then
+      echo "(${purple}${CONDA_DEFAULT_ENV}${normal})"
+    fi
+  fi
+}
+
+# Ordinary stuff
+# user: show our username
+prompt_user_on(){
+  export PROMPT_USER=1
+}
+
+prompt_user_off(){
+  unset PROMPT_USER
+}
+
+# host: show the hostname
+prompt_host_on(){
+  export PROMPT_HOST=1
+}
+
+prompt_host_off(){
+  unset PROMPT_HOST
+}
+
+# path: show the current working directory
+prompt_path_on(){
+  export PROMPT_PATH=1
+}
+
+prompt_path_off(){
+  unset PROMPT_PATH
+}
+
+# newline: add a \n when we want it
+prompt_newline_on(){
+  export PROMPT_NEWLINE=1
+}
+
+prompt_newline_off(){
+  unset PROMPT_NEWLINE
+}
+
+# group the boring stuff together
+_prompt_norm(){
+  _prompt_opt user && echo -n "${cyan}\u"
+  if _prompt_opt host; then
+    if _prompt_opt user; then
+      echo -n "@"
+    else
+      echo -n "${cyan}"
+    fi
+    echo -n "\h"
+  fi
+  echo -n "${normal}"
+  _prompt_opt path && echo ":${green}\w${normal}"
+}
+
+# Last, just have the $ with or without the newline
+_prompt_ender(){
+  _prompt_opt newline && echo -n "\n"
+  echo "$ "
+}
+
+# Some preset combinations of options
+prompt_full(){
+  prompt_color_on
+  prompt_git_on
+  prompt_env_on
+  prompt_user_on
+  prompt_host_on
+  prompt_path_on
+  prompt_newline_off
+}
+
+prompt_simple(){
+  prompt_color_on
+  prompt_git_off
+  prompt_env_off
+  prompt_user_on
+  prompt_host_on
+  prompt_path_on
+  prompt_newline_off
+}
+
+prompt_short(){
+  prompt_color_on
+  prompt_git_off
+  prompt_env_off
+  prompt_user_on
+  prompt_host_on
+  prompt_path_off
+  prompt_newline_off
+}
+
+prompt_none(){
+  prompt_color_off
+  prompt_git_off
+  prompt_env_off
+  prompt_user_off
+  prompt_host_off
+  prompt_path_off
+  prompt_newline_off
+}
+
+# Turn on the prompt!
 prompt_full
