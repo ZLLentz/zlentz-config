@@ -39,11 +39,6 @@ prompt_color_off(){
   unset normal
 }
 
-# _prompt_opt: quick utility for seeing if the relevant env var is set
-_prompt_opt(){
-  [[ -v "PROMPT_${1^^}" ]]
-}
-
 # Special stuff #
 # git: show git repo info if we're in a repo
 prompt_git_on(){
@@ -55,10 +50,10 @@ prompt_git_off(){
 }
 
 _prompt_git(){
-  if _prompt_opt git; then
-    if [ -x "$(command -v git)" ]; then
+  if [[ -n "${PROMPT_GIT}" ]]; then
+    if [[ -x "$(command -v git)" ]]; then
       if git rev-parse --git-dir > /dev/null 2>&1; then
-        if [ -n "$(git status --porcelain)" ]; then
+        if [[ -n "$(git status --porcelain)" ]]; then
           status_symbol=${red}"+"
         else
           status_symbol=${green}"-"
@@ -79,10 +74,10 @@ prompt_env_off(){
 }
 
 _prompt_env(){
-  if _prompt_opt env; then
-    if [ -n "${ENVNAME}" ]; then
+  if [[ -n "${PROMPT_ENV}" ]]; then
+    if [[ -n "${ENVNAME}" ]]; then
       echo "(${purple}${ENVNAME}${normal})"
-    elif [ -n "${CONDA_DEFAULT_ENV}" ]; then
+    elif [[ -n "${CONDA_DEFAULT_ENV}" ]]; then
       echo "(${purple}${CONDA_DEFAULT_ENV}${normal})"
     fi
   fi
@@ -127,9 +122,11 @@ prompt_newline_off(){
 
 # group the boring stuff together
 _prompt_norm(){
-  _prompt_opt user && echo -n "${cyan}\u"
-  if _prompt_opt host; then
-    if _prompt_opt user; then
+  if [[ -n "${PROMPT_USER}" ]]; then
+    echo -n "${cyan}\u"
+  fi
+  if [[ -n "${PROMPT_HOST}" ]]; then
+    if [[ -n "${PROMPT_USER}" ]]; then
       echo -n "@"
     else
       echo -n "${cyan}"
@@ -137,12 +134,16 @@ _prompt_norm(){
     echo -n "\h"
   fi
   echo -n "${normal}"
-  _prompt_opt path && echo ":${green}\w${normal}"
+  if [[ -n "${PROMPT_PATH}" ]]; then
+    echo ":${green}\w${normal}"
+  fi
 }
 
 # Last, just have the $ with or without the newline
 _prompt_ender(){
-  _prompt_opt newline && echo -n "\n"
+  if [[ -n "${PROMPT_NEWLINE}" ]]; then
+    echo -n "\n"
+  fi
   echo "$ "
 }
 
