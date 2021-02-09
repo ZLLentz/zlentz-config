@@ -2,5 +2,5 @@ channels:
   - conda-forge
   - pcds-tag
   - defaults
-channel_priority: true
+channel_priority: strict
 update_dependencies: false
